@@ -1,0 +1,62 @@
+.header {
+  --bgColor: var(--bgColor, white);
+  --width_: var(--width, 200px);
+  --widthLeft_: var(--widthLeft, var(--width_));
+  --widthRight_: var(--widthRight, var(--width_));
+
+  display: flex;
+  align-items: center;
+  margin-top: var(--spaceBefore, 60px);
+  margin-bottom: var(--spaceAfter, 40px);
+}
+
+.header span {
+  height: 2px;
+  position: relative;
+}
+
+.header span:first-child {
+  background: linear-gradient(90deg, transparent, var(--bgColor));
+  min-width: var(--widthLeft_);
+}
+
+.header span:last-child {
+  background: linear-gradient(-90deg, transparent, var(--bgColor));
+  min-width: var(--widthRight_);
+}
+
+.header div {
+  line-height: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  background-color: var(--bgColor);
+  border-radius: 4px;
+
+  font-family: initial;
+  font-style: italic;
+  font-size: 14px;
+  white-space: nowrap;
+
+  color: #555;
+  box-shadow: 0px 2px 10px 0px #0002, 0px 2px 1px 0px #0002;
+}
+
+.header span::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  filter: blur(1.2px);
+}
+
+.header span:first-child::before {
+  background: linear-gradient(90deg, transparent, transparent 25%, #0006);
+}
+
+.header span:last-child::before {
+  background: linear-gradient(-90deg, transparent, transparent 25%, #0006);
+}

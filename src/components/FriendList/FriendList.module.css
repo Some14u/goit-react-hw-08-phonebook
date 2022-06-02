@@ -1,0 +1,32 @@
+.status {
+  display: block;
+  width: 13px;
+  height: 13px;
+  border-radius: 10px;
+  background-color: #ff5153;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.statusOnline {
+  background-color: #47b04d;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  width: fit-content;
+  box-shadow: 0 1px 3px 0px #0008;
+  padding: 5px;
+}
+
+.item:not(:last-child) {
+  margin-bottom: 6px;
+}
+
+.name {
+  min-width: 120px;
+  font-size: 1.1em;
+  margin-left: 10px;
+}
