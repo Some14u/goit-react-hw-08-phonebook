@@ -3,8 +3,15 @@ import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
 
 
+
+
 export default class ContactForm extends React.Component {
-  state = { name: "", number: "" };
+  static defaultState = { name: "", number: "" };
+
+  constructor() { // Doing constructor to prevent eslint warning about static assignment
+    super();
+    this.state = { ...ContactForm.defaultState };
+  }
 
   nameLabelId = nanoid();
   numberLabelId = nanoid();
@@ -15,8 +22,9 @@ export default class ContactForm extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     const { name, number } = this.state;
-    const format = str => str.trim().replace(/ +(?= )/g,''); //remove extra spaces
+    const format = str => str.trim().replace(/ +(?= )/g,''); // Removes extra spaces
     this.props.addContact({ name: format(name), number: format(number) });
+    this.setState(ContactForm.defaultState);
   }
 
   render() {
