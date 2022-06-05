@@ -4,7 +4,7 @@ export default function Contact({ id, name, number, removeContact }) {
   return (
     <li className="contacts__item">
       {name}: {number}
-      <button onClick={ e => removeContact(id) }>Delete</button>
+      <button type="button" onClick={ e => removeContact(id) }>Delete</button>
     </li>
   );
 }
