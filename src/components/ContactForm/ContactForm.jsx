@@ -8,8 +8,8 @@ import PropTypes from "prop-types";
 export default class ContactForm extends React.Component {
   static defaultState = { name: "", number: "" };
 
-  constructor() { // Doing constructor to prevent eslint warning about static assignment
-    super();
+  constructor(props) { // Doing constructor to prevent eslint warning about static assignment
+    super(props);
     this.state = { ...ContactForm.defaultState };
   }
 
