@@ -1,35 +1,36 @@
-import Spacer from "components/Spacer/Spacer";
-import Header from "components/Header/Header";
-import Profile from "components/Profile/Profile";
-import Statistics from "components/Statistics/Statistics";
-import FriendList from "./FriendList/FriendList";
-import TransactionHistory from "./TransactionHistory/TransactionHistory";
-import user from "data/user.json";
-import data from "data/data.json";
-import friends from "data/friends.json";
-import transactions from "data/transactions.json";
+import React from "react";
+import Statistics from "./Statistics";
 
+export class App extends React.Component {
+  state = { good: 0, neutral: 0, bad: 0 }
+  keys = Object.keys(this.state);
 
+  buildButton = (option) => <button className="voteButton" key={option} name={option} onClick={this.OnButtonClick}>{option}</button>;
 
-export const App = () => {
-  return (
-    <div className="wrapper">
-    <Header text="Первое задание" bgColor="#eff" skipSpaceBefore />
-      <Profile
-        username={user.username}
-        tag={user.tag}
-        location={user.location}
-        avatar={user.avatar}
-        stats={user.stats}
-      />
-    <Header text="Второе задание" bgColor="#ffe" />
-      <Statistics title="Upload stats" stats={data} />
-      <Spacer />
-      <Statistics stats={data} />
-    <Header text="Третье задание" bgColor="#fef" />
-      <FriendList friends={friends} />
-    <Header text="Четвёртое задание" bgColor="#efe" width="350px"/>
-      <TransactionHistory items={transactions} />
-    </div>
-  );
-};
+  OnButtonClick = e => {
+    const option = e.target.name;
+    this.setState(oldState => ({ [option]: oldState[option] + 1 }));
+  }
+
+  countTotalFeedback = (list = App.options) => {
+    return this.keys.reduce((acc, option) => (acc + this.state[option]), 0);
+  }
+
+  countPositivePercentage() {
+    return Math.round(this.state.good / this.countTotalFeedback() * 100);
+  }
+
+  render() {
+    const { good, neutral, bad } = this.state;
+    const total = this.countTotalFeedback();
+    const positivePercentage = this.countPositivePercentage()
+    return (
+      <div>
+        <h2>Please leave feedback</h2>
+        {this.keys.map(key => this.buildButton(key))}
+        <Statistics good={good} neutral={neutral} bad={bad} total={total} positivePercentage={positivePercentage}/>
+      </div>
+    )
+  };
+}
+
