@@ -13,7 +13,7 @@ export default function Filter({ filter, updateFilterState }) {
         name="filter"
         id={filterLabelId}
         value={filter}
-        onInput={ e => updateFilterState(e.target.value) } />
+        onChange={ e => updateFilterState(e.target.value) } />
     </label>
   );
 }
