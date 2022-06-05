@@ -1,34 +1,57 @@
 import React from "react";
-import Statistics from "./Statistics";
+
+import Contacts from "./Contacts";
+import ContactForm from "./ContactForm";
+import Filter from "./Filter";
+import { nanoid } from "nanoid";
 
 export class App extends React.Component {
-  state = { good: 0, neutral: 0, bad: 0 }
-  keys = Object.keys(this.state);
-
-  buildButton = (option) => <button className="voteButton" key={option} name={option} onClick={this.OnButtonClick}>{option}</button>;
-
-  OnButtonClick = e => {
-    const option = e.target.name;
-    this.setState(oldState => ({ [option]: oldState[option] + 1 }));
+  state = {
+    contacts: [
+      // {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+      // {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+      // {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+      // {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+    ],
+    filter: "",
   }
 
-  countTotalFeedback = (list = App.options) => {
-    return this.keys.reduce((acc, option) => (acc + this.state[option]), 0);
+
+  contactExists = searchName => this.state.contacts.some(({name}) => name === searchName);
+  
+
+  addContact = ({ name, number }) => {
+    if (this.contactExists(name)) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+    this.setState(oldState => {
+      const contacts = [ ...oldState.contacts ];
+      contacts.push({ name, number, id: nanoid() });
+      return { contacts };
+    });
   }
 
-  countPositivePercentage() {
-    return Math.round(this.state.good / this.countTotalFeedback() * 100);
+  removeContact = idToDelete => {
+    this.setState(oldState => {
+      const contacts = oldState.contacts.filter(({ id }) => id !== idToDelete);
+      return { contacts };
+    });
   }
+
+  updateFilterState = filter => this.setState({ filter });
+
 
   render() {
-    const { good, neutral, bad } = this.state;
-    const total = this.countTotalFeedback();
-    const positivePercentage = this.countPositivePercentage()
+    const { contacts, filter } = this.state;
     return (
       <div>
-        <h2>Please leave feedback</h2>
-        {this.keys.map(key => this.buildButton(key))}
-        <Statistics good={good} neutral={neutral} bad={bad} total={total} positivePercentage={positivePercentage}/>
+        <h1>Phonebook</h1>
+        <ContactForm addContact={this.addContact} />
+        
+        <h2>Contacts</h2>
+        <Filter filter={filter} updateFilterState={this.updateFilterState} />
+        <Contacts contacts={contacts} filter={filter} removeContact={this.removeContact} />
       </div>
     )
   };

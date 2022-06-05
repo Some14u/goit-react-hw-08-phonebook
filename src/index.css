@@ -14,22 +14,43 @@ code {
     monospace;
 }
 
-p {
-  margin: 0;
+input {
+  font-family: inherit;
 }
 
-ul {
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  list-style: none;
+button {
+  font-size: 0.7em;
+  font-family: inherit;
 }
 
-.voteButton:not(:last-child) {
-  margin-right: 4px;
-  text-transform: capitalize;
+.phonebook__form {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  border: solid thin black;
+  padding: 10px;
 }
 
-.statisticsField {
-  text-transform: capitalize;
+.phonebook__label {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.phonebook__input {
+  display: block;
+}
+
+.phonebook__submit-btn {
+  width: fit-content;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.contacts__item {
+  line-height: 2;
+}
+
+.contacts__item > button {
+  margin-left: 10px;
+  line-height: 0.9;
 }
