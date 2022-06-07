@@ -1,8 +1,10 @@
 import React from "react";
-import { nanoid } from "nanoid";
 import PropTypes from "prop-types";
-
-
+import s from "./ContactForm.module.css";
+import { nanoid } from "nanoid";
+import { text } from "helpers/languageManager";
+import icons from "resources/icons.svg";
+import { generateName, generatePhone } from "helpers/personsProvider";
 
 
 export default class ContactForm extends React.Component {
@@ -23,43 +25,57 @@ export default class ContactForm extends React.Component {
     e.preventDefault();
     const { name, number } = this.state;
     const format = str => str.trim().replace(/ +(?= )/g,''); // Removes extra spaces
-    this.props.addContact({ name: format(name), number: format(number) });
-    this.setState(ContactForm.defaultState);
+    const success = this.props.addContact({ name: format(name), number: format(number) });
+    if (success) this.setState(ContactForm.defaultState);
+  }
+
+  submitGenerated = e => {
+    const name = generateName();
+    const number = generatePhone();
+    this.props.addContact({ name, number });
   }
 
   render() {
     const { name, number } = this.state;
     return (
-      <form className="phonebook__form" onSubmit={this.onSubmit}>
-        <label className="phonebook__label" htmlFor={this.nameLabelId}>
-          Name
+      <form className={s.form} onSubmit={this.onSubmit}>
+        <label className={s.formLabel} htmlFor={this.nameLabelId}>
+          {text.name}
           <input
-            className="phonebook__input"
+            className={s.formInput}
             type="text"
             name="name"
             id={this.nameLabelId}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            pattern="^[a-zA-Zа-яА-ЯіІєЄїЇґҐ\']+(([' -][a-zA-Zа-яА-ЯіІєЄїЇґҐ\' ])?[a-zA-Zа-яА-ЯіІєЄїЇґҐ\']*)*$"
+            title={text.nameMessage}
             required
             value={name}
             onChange={this.updateNameState}
           />
         </label>
-        <label className="phonebook__label" htmlFor={this.numberLabelId}>
-          Number
+        <label className={s.formLabel} htmlFor={this.numberLabelId}>
+          {text.number}
           <input
-            className="phonebook__input"
+            className={s.formInput}
             id={this.numberLabelId}
             type="tel"
             name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            pattern="\+?\d{1,5}?[-.\s]?\(?\d{1,5}?\)?[-.\s]?\d{1,5}[-.\s]?\d{1,5}[-.\s]?\d{1,9}"
+            title={text.phoneMessage}
             required
             value={number}
             onChange={this.updateNumberState}
           />
         </label>
-        <button className="phonebook__submit-btn" type="submit">Add contact</button>
+        <div className={s.buttonGroup}>
+          <button className={s.formButton} type="submit">{text.addContact}</button>
+          <button className={s.formButton} type="button" onClick={this.submitGenerated}>
+            <svg width="25" height="25">
+              <use href={icons + "#random"} />
+            </svg>
+            {text.addRandom}
+          </button>
+        </div>
       </form>
     );
   }

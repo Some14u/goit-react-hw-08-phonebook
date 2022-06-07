@@ -4,25 +4,23 @@ import Contacts from "./Contacts";
 import ContactForm from "./ContactForm";
 import Filter from "./Filter";
 import { nanoid } from "nanoid";
+import LanguageToggle from "./LanguageToggle";
+import { defaultLanguage, availableLanguages, changeLanguage, text } from "helpers/languageManager";
+
+
 
 export class App extends React.Component {
   state = {
-    contacts: [
-      // {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-      // {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-      // {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-      // {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-    ],
+    contacts: [],
     filter: "",
+    currentLanguage: defaultLanguage,
   }
 
-
   contactExists = searchName => this.state.contacts.some(({name}) => name === searchName);
-  
 
-  addContact = ({ name, number }) => {
+  addContact = ({ name, number }) => { // Returns true only on successfull insert
     if (this.contactExists(name)) {
-      alert(`${name} is already in contacts.`);
+      alert(name + text.alreadyInContacts);
       return;
     }
     this.setState(oldState => {
@@ -30,6 +28,7 @@ export class App extends React.Component {
       contacts.push({ name, number, id: nanoid() });
       return { contacts };
     });
+    return true;
   }
 
   removeContact = idToDelete => {
@@ -41,17 +40,26 @@ export class App extends React.Component {
 
   updateFilterState = filter => this.setState({ filter });
 
+  onChangeLanguage = newLanguage => {
+    changeLanguage(newLanguage);
+    this.setState({ currentLanguage: newLanguage });
+  }
 
   render() {
-    const { contacts, filter } = this.state;
+    const { contacts, filter, currentLanguage } = this.state;
     return (
       <div>
-        <h1>Phonebook</h1>
+        <h1>{text.phoneBook}</h1>
         <ContactForm addContact={this.addContact} />
         
-        <h2>Contacts</h2>
+        <h2>{text.contacts}</h2>
         <Filter filter={filter} updateFilterState={this.updateFilterState} />
         <Contacts contacts={contacts} filter={filter} removeContact={this.removeContact} />
+        <LanguageToggle
+          languagesList={availableLanguages}
+          initialLanguage={currentLanguage}
+          changeLanguage={ this.onChangeLanguage }
+        />
       </div>
     )
   };

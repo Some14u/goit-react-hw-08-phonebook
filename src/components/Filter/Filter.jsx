@@ -1,14 +1,16 @@
 import PropTypes from "prop-types";
+import s from "./Filter.module.css";
 import { nanoid } from "nanoid";
+import { text } from "helpers/languageManager";
 
 const filterLabelId = nanoid();
 
 export default function Filter({ filter, updateFilterState }) {
   return (
-    <label className="phonebook__label" htmlFor={filterLabelId}>
-      Find contacts by name
+    <label className={s.label} htmlFor={filterLabelId}>
+      {text.findByName}
       <input
-        className="phonebook__input"
+        className={s.input}
         type="search"
         name="filter"
         id={filterLabelId}
@@ -22,3 +24,4 @@ Filter.propTypes = {
   filter: PropTypes.string.isRequired,
   updateFilterState: PropTypes.func.isRequired,
 }
+

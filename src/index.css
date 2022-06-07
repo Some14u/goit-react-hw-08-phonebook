@@ -1,12 +1,26 @@
 /* bring in normalize.css styles */
 @import-normalize;
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: -apple-system, sans-serif;
   margin: 0;
   padding: 15px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: linear-gradient(135deg, #eee 25%, transparent 25%),
+    linear-gradient(225deg, #eee 25%, transparent 25%),
+    linear-gradient(45deg, #eee 25%, transparent 25%),
+    linear-gradient(315deg, #eee 25%, #eeea 25%);
+  background-position: 30px 0, 30px 0, 0 0, 0 0;
+  background-size: 60px 60px;
+  background-repeat: repeat;
+
+  color: #333;
 }
 
 code {
@@ -18,39 +32,19 @@ input {
   font-family: inherit;
 }
 
-button {
-  font-size: 0.7em;
-  font-family: inherit;
+h1,
+h2 {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.phonebook__form {
-  display: flex;
-  flex-direction: column;
-  width: 350px;
-  border: solid thin black;
-  padding: 10px;
+button:hover {
+  cursor: pointer;
 }
 
-.phonebook__label {
-  margin-bottom: 15px;
-  line-height: 1.5;
+.contacts__list {
+  position: relative;
 }
 
-.phonebook__input {
-  display: block;
-}
-
-.phonebook__submit-btn {
-  width: fit-content;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-.contacts__item {
-  line-height: 2;
-}
-
-.contacts__item > button {
-  margin-left: 10px;
-  line-height: 0.9;
+ul {
+  padding-left: 30px;
 }
