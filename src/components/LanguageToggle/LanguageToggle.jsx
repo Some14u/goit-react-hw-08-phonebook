@@ -9,7 +9,6 @@ export default class LanguageToggle extends React.Component {
   state = { selectedLanguage: this.props.initialLanguage };
 
   nextState = e => {
-    console.log(this.props.languagesList);
     this.setState(oldState => {
       const list = this.props.languagesList;
 

@@ -7,7 +7,6 @@ var text = strings.languages[defaultLanguage];
 
 function changeLanguage(newLanguage) {
   text = strings.languages[newLanguage];
-  console.log(newLanguage);
   currentLanguage = newLanguage;
 }
 
