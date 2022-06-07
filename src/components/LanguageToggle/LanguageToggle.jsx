@@ -1,39 +1,26 @@
-import React from "react";
 import s from "./LanguageToggle.module.css";
 import PropTypes from "prop-types";
 import icons from "resources/icons.svg";
 
 
-export default class LanguageToggle extends React.Component {
-
-  state = { selectedLanguage: this.props.initialLanguage };
-
-  nextState = e => {
-    this.setState(oldState => {
-      const list = this.props.languagesList;
-
-      var index = list.indexOf(oldState.selectedLanguage) + 1;
-      if (index === list.length) index = 0;
-      
-      this.props.changeLanguage(list[index]);
-      return { selectedLanguage: list[index] };
-    });
+export default function LanguageToggle({ languagesList, currentLanguage, changeStateLanguage }) {
+  
+  function nextLanguage() {
+    var index = (languagesList.indexOf(currentLanguage) + 1) % languagesList.length;
+    changeStateLanguage(languagesList[index]);
   }
 
-  render() {
-    const { selectedLanguage } = this.state;
-    return (
-      <button type="button" className={s.toggle} onClick={this.nextState}>
-        <svg className={s.svg} width="39" height="26">
-          <use href={icons + "#language-" + selectedLanguage} />
-        </svg>
-      </button>
-    );
-  }
+  return (
+    <button type="button" className={s.toggle} onClick={nextLanguage}>
+      <svg className={s.svg} width="39" height="26">
+        <use href={icons + "#language-" + currentLanguage} />
+      </svg>
+    </button>
+  );
 }
 
 LanguageToggle.propTypes = {
   languagesList: PropTypes.arrayOf(PropTypes.string).isRequired,
-  initialLanguage: PropTypes.string.isRequired,
-  changeLanguage: PropTypes.func.isRequired,
+  currentLanguage: PropTypes.string.isRequired,
+  changeStateLanguage: PropTypes.func.isRequired,
 }

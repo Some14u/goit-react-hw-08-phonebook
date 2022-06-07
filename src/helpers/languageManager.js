@@ -5,7 +5,7 @@ const defaultLanguage = strings.default;
 var currentLanguage = defaultLanguage;
 var text = strings.languages[defaultLanguage];
 
-function changeLanguage(newLanguage) {
+function selectLanguage(newLanguage) {
   text = strings.languages[newLanguage];
   currentLanguage = newLanguage;
 }
@@ -15,5 +15,5 @@ export {
   defaultLanguage,
   currentLanguage,
   text,
-  changeLanguage,
+  selectLanguage,
 };

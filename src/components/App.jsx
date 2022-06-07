@@ -1,19 +1,39 @@
 import React from "react";
+import { nanoid } from "nanoid";
+import { defaultLanguage, availableLanguages, selectLanguage, text } from "helpers/languageManager";
 
 import Contacts from "./Contacts";
 import ContactForm from "./ContactForm";
-import Filter from "./Filter";
-import { nanoid } from "nanoid";
 import LanguageToggle from "./LanguageToggle";
-import { defaultLanguage, availableLanguages, changeLanguage, text } from "helpers/languageManager";
+import Filter from "./Filter";
+
 
 
 
 export class App extends React.Component {
-  state = {
+  static defaultState = {
     contacts: [],
     filter: "",
     currentLanguage: defaultLanguage,
+  }
+  static storageKey = process.env.PUBLIC_URL.replace("/", "");
+
+  state = structuredClone(this.constructor.defaultState);
+
+  componentDidMount() {
+    var data = localStorage.getItem(this.constructor.storageKey);
+    if (!data) {
+      localStorage.setItem(this.constructor.storageKey, JSON.stringify(this.constructor.defaultState));
+      return;
+    }
+    data = JSON.parse(data);
+    selectLanguage(data.currentLanguage);
+    this.setState(data);
+  }
+
+  componentDidUpdate(prevState) {
+    if (prevState === this.state || prevState.contacts === this.state.contacts) return;
+    localStorage.setItem(this.constructor.storageKey, JSON.stringify(this.state));
   }
 
   contactExists = searchName => this.state.contacts.some(({name}) => name === searchName);
@@ -41,7 +61,7 @@ export class App extends React.Component {
   updateFilterState = filter => this.setState({ filter });
 
   onChangeLanguage = newLanguage => {
-    changeLanguage(newLanguage);
+    selectLanguage(newLanguage);
     this.setState({ currentLanguage: newLanguage });
   }
 
@@ -57,8 +77,8 @@ export class App extends React.Component {
         <Contacts contacts={contacts} filter={filter} removeContact={this.removeContact} />
         <LanguageToggle
           languagesList={availableLanguages}
-          initialLanguage={currentLanguage}
-          changeLanguage={ this.onChangeLanguage }
+          currentLanguage={currentLanguage}
+          changeStateLanguage={ this.onChangeLanguage }
         />
       </div>
     )
