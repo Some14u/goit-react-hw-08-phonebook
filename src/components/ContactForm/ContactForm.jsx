@@ -46,7 +46,7 @@ export default class ContactForm extends React.Component {
             type="text"
             name="name"
             id={this.nameLabelId}
-            pattern="^[a-zA-Zа-яА-ЯіІєЄїЇґҐ\']+(([' -][a-zA-Zа-яА-ЯіІєЄїЇґҐ\' ])?[a-zA-Zа-яА-ЯіІєЄїЇґҐ\']*)*$"
+            pattern="^[a-zA-Zа-яА-ЯіІєЄїЇґҐёЁ]+(([' -][a-zA-Zа-яА-ЯіІєЄїЇґҐёЁ ])?[a-zA-Zа-яА-ЯіІєЄїЇґҐёЁ]*)*$"
             title={text.nameMessage}
             required
             value={name}
