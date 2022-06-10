@@ -21,7 +21,7 @@ export class App extends React.Component {
   state = structuredClone(this.constructor.defaultState);
 
   componentDidMount() {
-    var data = localStorage.getItem(this.constructor.storageKey);
+    let data = localStorage.getItem(this.constructor.storageKey);
     if (!data) {
       localStorage.setItem(this.constructor.storageKey, JSON.stringify(this.constructor.defaultState));
       return;
@@ -74,7 +74,7 @@ export class App extends React.Component {
       <div>
         <h1>{text.phoneBook}</h1>
         <ContactForm addContact={this.addContact} />
-        
+
         <h2>{text.contacts}</h2>
         <Filter filter={filter} updateFilterState={this.updateFilterState} />
         <Contacts contacts={contacts} filter={filter} removeContact={this.removeContact} />

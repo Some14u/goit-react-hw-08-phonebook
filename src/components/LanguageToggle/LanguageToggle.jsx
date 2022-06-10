@@ -4,9 +4,9 @@ import icons from "resources/icons.svg";
 
 
 export default function LanguageToggle({ languagesList, currentLanguage, changeStateLanguage }) {
-  
+
   function nextLanguage() {
-    var index = (languagesList.indexOf(currentLanguage) + 1) % languagesList.length;
+    let index = (languagesList.indexOf(currentLanguage) + 1) % languagesList.length;
     changeStateLanguage(languagesList[index]);
   }
 

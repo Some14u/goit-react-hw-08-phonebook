@@ -4,7 +4,7 @@ import Contact from "./Contact/Contact";
 export default function Contacts({ contacts, filter, removeContact }) {
   filter = filter.trim().toLowerCase();
   // buffer contains each element by id with calculated y-index based on filtered status
-  var [buffer, filteredCounter, unfilteredCounter, isFiltered] = [{}, 0, 0, false];
+  let [buffer, filteredCounter, unfilteredCounter, isFiltered] = [{}, 0, 0, false];
 
   contacts.forEach(({ id, name }) => {
     isFiltered = name.toLowerCase().includes(filter);
