@@ -1,15 +1,22 @@
+import { useMemo } from "react";
 import PropTypes from "prop-types";
 import Contact from "./Contact/Contact";
 
 export default function Contacts({ contacts, filter, removeContact }) {
   filter = filter.trim().toLowerCase();
-  // buffer contains each element by id with calculated y-index based on filtered status
-  let [buffer, filteredCounter, unfilteredCounter, isFiltered] = [{}, 0, 0, false];
 
-  contacts.forEach(({ id, name }) => {
-    isFiltered = name.toLowerCase().includes(filter);
-    buffer[id] = { isFiltered, idx: isFiltered ? filteredCounter++ : unfilteredCounter++ };
-  });
+  // buffer contains each element by id with calculated y-index based on filtered status
+  // make buffer calculation dependent on contact/filter change
+  const [buffer, filteredAmount] = useMemo(() => {
+    let [buffer, filteredCounter, unfilteredCounter] = [{}, 0, 0];
+    contacts.forEach(({ id, name }) => {
+      console.log("executed");
+      const isFiltered = name.toLowerCase().includes(filter);
+      buffer[id] = { isFiltered, idx: isFiltered ? filteredCounter++ : unfilteredCounter++ };
+    });
+    return [buffer, filteredCounter];
+  }, [contacts, filter]);
+
 
   return (
     <ul className="contacts__list">
@@ -19,7 +26,7 @@ export default function Contacts({ contacts, filter, removeContact }) {
           key={id}
           id={id}
           removeContact={removeContact}
-          idx={(buffer[id].isFiltered ? 0 : filteredCounter) + buffer[id].idx} // unfiltered should respect filtered amount
+          idx={(buffer[id].isFiltered ? 0 : filteredAmount) + buffer[id].idx} // unfiltered should respect filtered amount
           isFiltered={buffer[id].isFiltered}
           {...restProps}
         />)
