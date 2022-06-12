@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import s from "./Filter.module.css";
 import { nanoid } from "nanoid";
-import { text } from "helpers/languageManager";
+import { useLanguagesContext } from "../LanguageProvider";
 
 const filterLabelId = nanoid();
 
 export default function Filter({ filter, updateFilterState }) {
+  const { text } = useLanguagesContext();
   return (
     <label className={s.label} htmlFor={filterLabelId}>
       {text.findByName}

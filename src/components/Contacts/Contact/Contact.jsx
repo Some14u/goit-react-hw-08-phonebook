@@ -1,10 +1,13 @@
 import PropTypes from "prop-types";
 import s from "./Contact.module.css";
-import { text } from "helpers/languageManager";
+import { useLanguagesContext } from "../../LanguageProvider";
+
 
 
 export default function Contact({ id, idx, isFiltered, name, number, removeContact }) {
   const itemClass = s.item + (!isFiltered ? " " + s.itemFilteredOut : "");
+  const { text } = useLanguagesContext();
+
   return (
     <li className={itemClass} style={{"--top": idx * 40 + "px"}}>
       <div className={s.wrapper} >

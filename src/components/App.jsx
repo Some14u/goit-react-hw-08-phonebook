@@ -1,90 +1,58 @@
-import React from "react";
-import { nanoid } from "nanoid";
-import { defaultLanguage, availableLanguages, selectLanguage, text } from "helpers/languageManager";
+import { useEffect, useState, useRef } from "react";
 
 import Contacts from "./Contacts";
 import ContactForm from "./ContactForm";
 import LanguageToggle from "./LanguageToggle";
 import Filter from "./Filter";
+import { useLanguagesContext } from "./LanguageProvider";
+import { loadFromStorage, saveToStorage } from "helpers/localStorage";
+
+import { nanoid } from "nanoid";
 
 
+export function App() {
+  const [contacts, setContacts] = useState(loadFromStorage("contacts", []));
+  const [filter, setFilter] = useState("");
+  const isMounted = useRef(false);
 
+  useEffect(() => {
+    if (!isMounted.current) return;
+    saveToStorage("contacts", contacts);
+  }, [contacts]);
 
-export class App extends React.Component {
-  static defaultState = {
-    contacts: [],
-    filter: "",
-    currentLanguage: defaultLanguage,
-  }
-  static storageKey = process.env.PUBLIC_URL.replace("/", "");
+  useEffect(() => { isMounted.current = true }, []);
 
-  state = structuredClone(this.constructor.defaultState);
-
-  componentDidMount() {
-    let data = localStorage.getItem(this.constructor.storageKey);
-    if (!data) {
-      localStorage.setItem(this.constructor.storageKey, JSON.stringify(this.constructor.defaultState));
-      return;
-    }
-    data = JSON.parse(data);
-    selectLanguage(data.currentLanguage);
-    this.setState(data);
-  }
-
-  componentDidUpdate(prevState) {
-    if (prevState === this.state || prevState.contacts === this.state.contacts) return;
-    localStorage.setItem(this.constructor.storageKey, JSON.stringify(this.state));
-  }
-
-  contactExists = searchName => {
+  function contactExists (searchName) {
     searchName = searchName.toLowerCase();
-    return this.state.contacts.some(({ name }) => name.toLowerCase() === searchName);
+    return contacts.some(({ name }) => name.toLowerCase() === searchName);
   }
 
-  addContact = ({ name, number }) => { // Returns true only on successfull insert
-    if (this.contactExists(name)) {
+  function addContact ({ name, number }) { // Returns true only after successfull insert
+    if (contactExists(name)) {
       alert(name + text.alreadyInContacts);
       return;
     }
-    this.setState(oldState => {
-      const contacts = [ ...oldState.contacts ];
-      contacts.push({ name, number, id: nanoid() });
-      return { contacts };
-    });
+    const newContact = { name, number, id: nanoid() };
+    setContacts(oldContacts => [...oldContacts, newContact]);
     return true;
   }
 
-  removeContact = idToDelete => {
-    this.setState(oldState => {
-      const contacts = oldState.contacts.filter(({ id }) => id !== idToDelete);
-      return { contacts };
-    });
+  function removeContact (idToDelete) {
+    setContacts(oldContacts => oldContacts.filter(({ id }) => id !== idToDelete));
   }
 
-  updateFilterState = filter => this.setState({ filter });
-
-  onChangeLanguage = newLanguage => {
-    selectLanguage(newLanguage);
-    this.setState({ currentLanguage: newLanguage });
-  }
-
-  render() {
-    const { contacts, filter, currentLanguage } = this.state;
-    return (
-      <div>
-        <h1>{text.phoneBook}</h1>
-        <ContactForm addContact={this.addContact} />
-
-        <h2>{text.contacts}</h2>
-        <Filter filter={filter} updateFilterState={this.updateFilterState} />
-        <Contacts contacts={contacts} filter={filter} removeContact={this.removeContact} />
-        <LanguageToggle
-          languagesList={availableLanguages}
-          currentLanguage={currentLanguage}
-          changeStateLanguage={ this.onChangeLanguage }
-        />
-      </div>
-    )
-  };
+  const { text } = useLanguagesContext();
+  return (
+    <div>
+      <h1>{text.phoneBook}</h1>
+      <ContactForm addContact={addContact} />
+      <h2>{text.contacts}</h2>
+      <Filter filter={filter} updateFilterState={setFilter} />
+      <Contacts contacts={contacts} filter={filter} removeContact={removeContact} />
+      <LanguageToggle/>
+    </div>
+  );
 }
+
+
 

@@ -1,13 +1,15 @@
 import s from "./LanguageToggle.module.css";
-import PropTypes from "prop-types";
 import icons from "resources/icons.svg";
 
+import { useLanguagesContext } from "../LanguageProvider";
 
-export default function LanguageToggle({ languagesList, currentLanguage, changeStateLanguage }) {
+
+export default function LanguageToggle() {
+  const { availableLanguages, currentLanguage, setCurrentLanguage } = useLanguagesContext();
 
   function nextLanguage() {
-    let index = (languagesList.indexOf(currentLanguage) + 1) % languagesList.length;
-    changeStateLanguage(languagesList[index]);
+    let index = (availableLanguages.indexOf(currentLanguage) + 1) % availableLanguages.length;
+    setCurrentLanguage(availableLanguages[index]);
   }
 
   return (
@@ -19,8 +21,3 @@ export default function LanguageToggle({ languagesList, currentLanguage, changeS
   );
 }
 
-LanguageToggle.propTypes = {
-  languagesList: PropTypes.arrayOf(PropTypes.string).isRequired,
-  currentLanguage: PropTypes.string.isRequired,
-  changeStateLanguage: PropTypes.func.isRequired,
-}
