@@ -13,10 +13,8 @@ export default function ContactForm({ addContact }) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
-  const refs = useRef({
-    nameLabelID: nanoid(),
-    numberLabelID: nanoid(),
-  });
+  const nameLabelID = useRef(nanoid());
+  const numberLabelID = useRef(nanoid());
 
   const updateNameState = event => setName(event.target.value);
   const updateNumberState = event => setNumber(event.target.value);
@@ -41,13 +39,13 @@ export default function ContactForm({ addContact }) {
 
   return (
     <form className={s.form} onSubmit={onSubmit}>
-      <label className={s.formLabel} htmlFor={refs.current.nameLabelID}>
+      <label className={s.formLabel} htmlFor={nameLabelID.current}>
         {text.name}
         <input
           className={s.formInput}
           type="text"
           name="name"
-          id={refs.current.nameLabelID}
+          id={nameLabelID.current}
           pattern="^[a-zA-Zа-яА-ЯіІєЄїЇґҐёЁ]+(([' -][a-zA-Zа-яА-ЯіІєЄїЇґҐёЁ ])?[a-zA-Zа-яА-ЯіІєЄїЇґҐёЁ]*)*$"
           title={text.nameMessage}
           required
@@ -55,11 +53,11 @@ export default function ContactForm({ addContact }) {
           onChange={updateNameState}
         />
       </label>
-      <label className={s.formLabel} htmlFor={refs.current.numberLabelID}>
+      <label className={s.formLabel} htmlFor={numberLabelID.current}>
         {text.number}
         <input
           className={s.formInput}
-          id={refs.current.numberLabelID}
+          id={numberLabelID.current}
           type="tel"
           name="number"
           pattern="\+?\d{1,5}?[-.\s]?\(?\d{1,5}?\)?[-.\s]?\d{1,5}[-.\s]?\d{1,5}[-.\s]?\d{1,9}"

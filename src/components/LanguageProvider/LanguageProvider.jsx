@@ -13,34 +13,33 @@ export function LanguageProvider({ children }) {
   const availableLanguages = Object.keys(strings.languages);
   const defaultLanguage = strings.default;
 
-  const refs = useRef({
-    text: strings.languages[defaultLanguage], // This holds all localized text. Should be updated to currentLanguage
-    isMounted: false, // This to prevent first render of effects
-  });
+  // This holds all localized text. It should be updated according to currentLanguage
+  const text = useRef(strings.languages[defaultLanguage]);
+  const isMounted = useRef(false);
 
   const [currentLanguage, setCurrentLanguage] = useReducer(reducer, loadFromStorage("language", defaultLanguage), reducer);
 
-  // This updates refs-text in the same state-commit as current language is
+  // This updates text in the same state-commit as current language is
   function reducer(oldValue, newValue = oldValue) {
-    refs.current.text = strings.languages[newValue];
+    text.current = strings.languages[newValue];
     return newValue;
   }
 
 
   useEffect(() => {
-    if (!refs.current.isMounted) return;
+    if (!isMounted.current) return;
     saveToStorage("language", currentLanguage);
   }, [currentLanguage])
 
 
-  useEffect(() => { refs.current.isMounted = true }, []);
+  useEffect(() => { isMounted.current = true }, []);
 
   const toContext = {
     availableLanguages,
     defaultLanguage,
     currentLanguage,
     setCurrentLanguage,
-    text: refs.current.text,
+    text: text.current,
   };
 
   return (
