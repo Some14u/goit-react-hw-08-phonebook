@@ -25,7 +25,6 @@ export function LanguageProvider({ children }) {
     return newValue;
   }
 
-
   useEffect(() => {
     if (!isMounted.current) return;
     saveToStorage("language", currentLanguage);

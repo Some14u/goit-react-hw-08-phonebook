@@ -10,6 +10,8 @@ import icons from "resources/icons.svg";
 
 
 export default function ContactForm({ addContact }) {
+  const { text, currentLanguage } = useLanguagesContext();
+
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
@@ -28,8 +30,6 @@ export default function ContactForm({ addContact }) {
       setNumber("");
     };
   }
-
-  const { text, currentLanguage } = useLanguagesContext();
 
   function submitGenerated () {
     const name = generateName(currentLanguage);
