@@ -10,7 +10,6 @@ export default function Contacts({ contacts, filter, removeContact }) {
   const [buffer, filteredAmount] = useMemo(() => {
     let [buffer, filteredCounter, unfilteredCounter] = [{}, 0, 0];
     contacts.forEach(({ id, name }) => {
-      console.log("executed");
       const isFiltered = name.toLowerCase().includes(filter);
       buffer[id] = { isFiltered, idx: isFiltered ? filteredCounter++ : unfilteredCounter++ };
     });

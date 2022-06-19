@@ -7,28 +7,23 @@ import { loadFromStorage, saveToStorage } from "helpers/localStorage";
 const LanguageContext = createContext();
 export const useLanguagesContext = () => useContext(LanguageContext);
 
+// Builds content of state as { text, current } selecting appropriate text from strings
+const reducer = (oldValue, newValue = oldValue) => ({ current: newValue, text: strings.languages[newValue] });
 
 export function LanguageProvider({ children }) {
 
   const availableLanguages = Object.keys(strings.languages);
   const defaultLanguage = strings.default;
 
-  // This holds all localized text. It should be updated according to currentLanguage
-  const text = useRef(strings.languages[defaultLanguage]);
   const isMounted = useRef(false);
 
-  const [currentLanguage, setCurrentLanguage] = useReducer(reducer, loadFromStorage("language", defaultLanguage), reducer);
+  const [language, setCurrentLanguage] = useReducer(reducer, loadFromStorage("language", defaultLanguage), reducer);
 
-  // This updates text in the same state-commit as current language is
-  function reducer(oldValue, newValue = oldValue) {
-    text.current = strings.languages[newValue];
-    return newValue;
-  }
 
   useEffect(() => {
     if (!isMounted.current) return;
-    saveToStorage("language", currentLanguage);
-  }, [currentLanguage])
+    saveToStorage("language", language.current);
+  }, [language])
 
 
   useEffect(() => { isMounted.current = true }, []);
@@ -36,9 +31,9 @@ export function LanguageProvider({ children }) {
   const toContext = {
     availableLanguages,
     defaultLanguage,
-    currentLanguage,
+    currentLanguage: language.current,
     setCurrentLanguage,
-    text: text.current,
+    text: language.text,
   };
 
   return (
