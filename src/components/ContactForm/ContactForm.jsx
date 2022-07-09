@@ -8,9 +8,13 @@ import { nanoid } from "nanoid";
 
 import icons from "resources/icons.svg";
 
+import { connect } from "react-redux";
+import { getContacts, addContact } from "redux/redux-contacts";
+import { getLanguage } from "redux/redux-language";
 
-export default function ContactForm({ addContact }) {
-  const { text, currentLanguage } = useLanguagesContext();
+
+function ContactForm({ contacts, currentLanguage, addContact }) {
+  const { text } = useLanguagesContext();
 
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
@@ -21,20 +25,32 @@ export default function ContactForm({ addContact }) {
   const updateNameState = event => setName(event.target.value);
   const updateNumberState = event => setNumber(event.target.value);
 
-  function onSubmit(event) {
-    event.preventDefault();
-    const format = str => str.trim().replace(/ +(?= )/g,''); // Removes extra spaces
-    const success = addContact({ name: format(name), number: format(number) });
-    if (success) {
-      setName("");
-      setNumber("");
-    };
+
+  function contactExists(searchName) {
+    searchName = searchName.toLowerCase();
+    return contacts.some(({ name }) => name.toLowerCase() === searchName);
   }
 
-  function submitGenerated () {
-    const name = generateName(currentLanguage);
-    const number = generatePhone(currentLanguage);
-    addContact({ name, number });
+  function onSubmit(event) {
+    event.preventDefault();
+    const format = str => str.trim().replace(/ +(?= )/g, ''); // Removes extra spaces
+    const nameFormatted = format(name);
+    if (contactExists(nameFormatted)) {
+      alert(nameFormatted + text.alreadyInContacts);
+      return;
+    }
+    addContact({ name: nameFormatted, phoneNumber: format(number) });
+    setName("");
+    setNumber("");
+  }
+
+  function submitGenerated() {
+    let name;
+    do { // This to make sure we're adding unique name
+      name = generateName(currentLanguage);
+    } while (contactExists(name));
+    const phoneNumber = generatePhone(currentLanguage);
+    addContact({ name, phoneNumber});
   }
 
   return (
@@ -81,5 +97,19 @@ export default function ContactForm({ addContact }) {
 }
 
 ContactForm.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  })).isRequired,
   addContact: PropTypes.func,
 }
+
+const mapStateToProps = state => ({
+  contacts: getContacts(state),
+  currentLanguage: getLanguage(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  addContact: ({ name, phoneNumber }) => dispatch(addContact(name, phoneNumber)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

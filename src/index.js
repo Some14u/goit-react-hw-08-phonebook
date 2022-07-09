@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { App } from 'components/App';
+import App from 'components/App';
 import './index.css';
 import { LanguageProvider } from 'components/LanguageProvider';
+import store from './redux/store';
+import { addContact } from 'redux/redux-contacts';
+import { Provider } from 'react-redux';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <LanguageProvider>
-      <App />
-    </LanguageProvider>
+    <Provider store={store}>
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
+    </Provider>
   </React.StrictMode>
 );
