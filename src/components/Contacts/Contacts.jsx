@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import PropTypes from "prop-types";
 import Contact from "./Contact/Contact";
-import { connect } from "react-redux";
-import { getContacts, getFilter } from "redux/redux-contacts";
+import { useContacts } from "redux/contacts-slice";
 
 
-function Contacts({ contacts, filter }) {
+export default function Contacts() {
+  const { contacts, filter } = useContacts();
+
   // buffer contains each element by id with calculated y-index based on filtered status
   // make buffer calculation dependent on contact/filter change
   const [buffer, filteredAmount] = useMemo(() => {
@@ -34,18 +34,3 @@ function Contacts({ contacts, filter }) {
     </ul>
   );
 }
-
-Contacts.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-  filter: PropTypes.string.isRequired,
-}
-
-const mapStateToProps = state => ({
-  contacts: getContacts(state),
-  filter: getFilter(state),
-});
-
-export default connect(mapStateToProps)(Contacts);

@@ -1,12 +1,11 @@
-import { combineReducers, createStore } from '@reduxjs/toolkit';
-import { contactsReducer } from './redux-contacts';
-import { languageReducer } from './redux-language';
+import { configureStore } from '@reduxjs/toolkit';
+import contacts from './contacts-slice';
+import language from './language-slice';
 
 import { defaultLanguage } from 'components/LanguageProvider';
-
 import { loadFromStorage, saveToStorage } from 'helpers/localStorage';
 
-const defaultStore = {
+const defaultState = {
   contacts: {
     items: [],
     filter: '',
@@ -14,14 +13,14 @@ const defaultStore = {
   language: defaultLanguage,
 };
 
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
-  language: languageReducer,
+const store = configureStore({
+  reducer: { contacts, language },
+  devTools: process.env.NODE_ENV !== 'production',
+  preloadedState: loadFromStorage(null, defaultState),
 });
-
-const store = createStore(rootReducer, loadFromStorage(null, defaultStore));
-export default store;
 
 store.subscribe(() => {
   saveToStorage(null, store.getState());
 });
+
+export default store;

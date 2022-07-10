@@ -1,7 +1,5 @@
 import persons from 'resources/persons.json';
-
-const randomInRange = range => Math.floor(Math.random() * range);
-const randomItem = list => list[randomInRange(list.length)];
+import { randomInRange, randomItem } from './common';
 
 export function generateName(language) {
   const gender = Math.random() > 0.5 ? 'male' : 'female';

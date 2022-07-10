@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import PropTypes from "prop-types";
 import s from "./ContactForm.module.css";
 
 import { generateName, generatePhone } from "helpers/personsProvider";
@@ -8,12 +7,15 @@ import { nanoid } from "nanoid";
 
 import icons from "resources/icons.svg";
 
-import { connect } from "react-redux";
-import { getContacts, addContact } from "redux/redux-contacts";
-import { getLanguage } from "redux/redux-language";
+import { useSelector } from "react-redux";
+import { useContacts } from "redux/contacts-slice";
+import { getLanguage } from "redux/language-slice";
 
 
-function ContactForm({ contacts, currentLanguage, addContact }) {
+export default function ContactForm() {
+  const currentLanguage = useSelector(getLanguage);
+  const { contacts, addContact } = useContacts({ trackFilter: false });
+
   const { text } = useLanguagesContext();
 
   const [name, setName] = useState("");
@@ -24,7 +26,6 @@ function ContactForm({ contacts, currentLanguage, addContact }) {
 
   const updateNameState = event => setName(event.target.value);
   const updateNumberState = event => setNumber(event.target.value);
-
 
   function contactExists(searchName) {
     searchName = searchName.toLowerCase();
@@ -39,7 +40,7 @@ function ContactForm({ contacts, currentLanguage, addContact }) {
       alert(nameFormatted + text.alreadyInContacts);
       return;
     }
-    addContact({ name: nameFormatted, phoneNumber: format(number) });
+    addContact(nameFormatted, format(number));
     setName("");
     setNumber("");
   }
@@ -50,7 +51,7 @@ function ContactForm({ contacts, currentLanguage, addContact }) {
       name = generateName(currentLanguage);
     } while (contactExists(name));
     const phoneNumber = generatePhone(currentLanguage);
-    addContact({ name, phoneNumber});
+    addContact(name, phoneNumber);
   }
 
   return (
@@ -95,21 +96,3 @@ function ContactForm({ contacts, currentLanguage, addContact }) {
     </form>
   );
 }
-
-ContactForm.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-  addContact: PropTypes.func,
-}
-
-const mapStateToProps = state => ({
-  contacts: getContacts(state),
-  currentLanguage: getLanguage(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  addContact: ({ name, phoneNumber }) => dispatch(addContact(name, phoneNumber)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

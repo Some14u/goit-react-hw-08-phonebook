@@ -1,19 +1,19 @@
 import PropTypes from "prop-types";
 import s from "./Contact.module.css";
 import { useLanguagesContext } from "components/LanguageProvider";
-import { connect } from "react-redux";
-import { removeContact } from "redux/redux-contacts";
+import { useContacts } from "redux/contacts-slice";
 
-
-function Contact({ id, idx, isFiltered, name, phoneNumber, removeContact }) {
-  const itemClass = s.item + (!isFiltered ? " " + s.itemFilteredOut : "");
+export default function Contact({ id, idx, isFiltered, name, phoneNumber }) {
+  const { removeContact } = useContacts({ trackContacts: false, trackFilter: false });
   const { text } = useLanguagesContext();
+
+  const itemClass = s.item + (!isFiltered ? " " + s.itemFilteredOut : "");
 
   return (
     <li className={itemClass} style={{"--top": idx * 40 + "px"}}>
       <div className={s.wrapper} >
         {name}: {phoneNumber}
-        <button className={s.deleteBtn} type="button" onClick={e => removeContact(id)}>{text.deleteContact}</button>
+        <button className={s.deleteBtn} type="button" onClick={() => removeContact(id)}>{text.deleteContact}</button>
       </div>
     </li>
   );
@@ -25,11 +25,5 @@ Contact.propTypes = {
   isFiltered: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
-  removeContact: PropTypes.func.isRequired,
 }
 
-const mapDispatchToProps = dispatch => ({
-  removeContact: (id) => dispatch(removeContact(id)),
-});
-
-export default connect(null, mapDispatchToProps)(Contact);

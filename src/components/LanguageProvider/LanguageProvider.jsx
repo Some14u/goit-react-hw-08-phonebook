@@ -1,10 +1,9 @@
 import { createContext, useContext } from "react";
-import PropTypes from "prop-types";
 
+import PropTypes from "prop-types";
 import strings from "resources/strings.json";
 
-import { connect } from "react-redux";
-import { getLanguage } from "redux/redux-language";
+import { useLanguage } from "redux/language-slice";
 
 
 const LanguageContext = createContext();
@@ -14,18 +13,14 @@ export const availableLanguages = Object.keys(strings.languages);
 export const defaultLanguage = strings.default;
 
 
-const mapStateToProps = state => ({
-  language: getLanguage(state),
-});
-
-
-export const LanguageProvider = connect(mapStateToProps)(({language, children }) => {
+export function LanguageProvider({ children }) {
+  const { language } = useLanguage();
   return (
     <LanguageContext.Provider value={{ text: strings.languages[language] }}>
       {children}
     </LanguageContext.Provider>
   );
-});
+};
 
 LanguageProvider.propTypes = {
   children: PropTypes.node.isRequired,
