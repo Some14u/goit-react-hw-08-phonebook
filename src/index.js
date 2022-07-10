@@ -4,7 +4,6 @@ import App from 'components/App';
 import './index.css';
 import { LanguageProvider } from 'components/LanguageProvider';
 import store from './redux/store';
-import { addContact } from 'redux/redux-contacts';
 import { Provider } from 'react-redux';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

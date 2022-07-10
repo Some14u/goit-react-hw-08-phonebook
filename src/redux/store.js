@@ -23,6 +23,5 @@ const store = createStore(rootReducer, loadFromStorage(null, defaultStore));
 export default store;
 
 store.subscribe(() => {
-  console.log('State after dispatch: ', store.getState());
   saveToStorage(null, store.getState());
 });
