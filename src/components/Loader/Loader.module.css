@@ -1,0 +1,10 @@
+.container {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.svg {
+  width: 80px;
+  fill: #0c4331;
+}

@@ -8,14 +8,13 @@ import { nanoid } from "nanoid";
 import icons from "resources/icons.svg";
 
 import { useSelector } from "react-redux";
-import { useContacts } from "redux/contacts-slice";
-import { getLanguage } from "redux/language-slice";
+import { useAddContact } from "redux/contactsSlice";
+import { getLanguage } from "redux/selectors";
 
 
 export default function ContactForm() {
   const currentLanguage = useSelector(getLanguage);
-  const { contacts, addContact } = useContacts({ trackFilter: false });
-
+  const [ contacts, addContact ] = useAddContact();
   const { text } = useLanguagesContext();
 
   const [name, setName] = useState("");
@@ -40,7 +39,7 @@ export default function ContactForm() {
       alert(nameFormatted + text.alreadyInContacts);
       return;
     }
-    addContact(nameFormatted, format(number));
+    addContact(nameFormatted, format(number), new Date().toISOString());
     setName("");
     setNumber("");
   }
@@ -51,7 +50,7 @@ export default function ContactForm() {
       name = generateName(currentLanguage);
     } while (contactExists(name));
     const phoneNumber = generatePhone(currentLanguage);
-    addContact(name, phoneNumber);
+    addContact(name, phoneNumber, new Date().toISOString());
   }
 
   return (

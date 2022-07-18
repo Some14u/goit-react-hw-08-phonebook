@@ -1,36 +1,51 @@
 import { useMemo } from "react";
+import { useFetchContacts } from "redux/contactsSlice";
+
 import Contact from "./Contact/Contact";
-import { useContacts } from "redux/contacts-slice";
+import Loader from "components/Loader";
+import Filter from "components/Filter";
+
+import { useLanguagesContext } from "components/LanguageProvider";
+import { useFilter } from "helpers/common";
 
 
 export default function Contacts() {
-  const { contacts, filter } = useContacts();
+  const { text } = useLanguagesContext();
+  const [contacts, loaded] = useFetchContacts();
+  const [filter, setFilter] = useFilter();
 
-  // buffer contains each element by id with calculated y-index based on filtered status
-  // make buffer calculation dependent on contact/filter change
-  const [buffer, filteredAmount] = useMemo(() => {
+  // extra contains each element by id with calculated y-index based on filtered status
+  const extra = useMemo(() => {
+    if (!contacts) return;
     const normalizedFilter = filter.trim().toLowerCase();
-    let [buffer, filteredCounter, unfilteredCounter] = [{}, 0, 0];
-    contacts.forEach(({ id, name }) => {
+    let [extra, filteredCounter, unfilteredCounter] = [{}, 0, 0];
+    contacts.forEach(({ createdAt:id, name }) => {
       const isFiltered = name.toLowerCase().includes(normalizedFilter);
-      buffer[id] = { isFiltered, idx: isFiltered ? filteredCounter++ : unfilteredCounter++ };
+      extra[id] = { isFiltered, idx: isFiltered ? filteredCounter++ : unfilteredCounter++ };
     });
-    return [buffer, filteredCounter];
+    Object.values(extra) // unfiltered should be shifted down by filtered amount
+      .filter(item => !item.isFiltered)
+      .forEach(item => item.idx += filteredCounter);
+    return extra;
   }, [contacts, filter]);
 
-
+  if (!loaded) return <Loader/>;
   return (
-    <ul>
-      {
-        contacts.map(({ id, ...restProps }) =>
-        <Contact
-          key={id}
-          id={id}
-          idx={(buffer[id].isFiltered ? 0 : filteredAmount) + buffer[id].idx} // unfiltered should respect filtered amount
-          isFiltered={buffer[id].isFiltered}
-          {...restProps}
-        />)
-      }
-    </ul>
+    <>
+      <h2>{text.contacts}</h2>
+      <Filter filter={filter} setFilter={setFilter} />
+      <ul>
+        {
+          contacts.map(({ createdAt, id, ...restProps }) =>
+          <Contact
+            key={createdAt}
+            id={id}
+            idx={extra[createdAt].idx}
+            isFiltered={extra[createdAt].isFiltered}
+            {...restProps}
+          />)
+        }
+      </ul>
+    </>
   );
 }

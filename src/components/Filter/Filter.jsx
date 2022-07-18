@@ -1,23 +1,25 @@
+import PropTypes from "prop-types";
 import s from "./Filter.module.css";
-import { nanoid } from "nanoid";
 import { useLanguagesContext } from "components/LanguageProvider";
-import { useContacts } from "redux/contacts-slice";
 
-const filterLabelId = nanoid();
 
-export default function Filter() {
-  const { filter, setFilter } = useContacts({ trackContacts: false });
+export default function Filter({filter, setFilter}) {
   const { text } = useLanguagesContext();
   return (
-    <label className={s.label} htmlFor={filterLabelId}>
+    <label className={s.label} htmlFor="filter">
       {text.findByName}
       <input
         className={s.input}
         type="search"
         name="filter"
-        id={filterLabelId}
+        id="filter"
         value={filter}
         onChange={ e => setFilter(e.target.value) } />
     </label>
   );
+}
+
+Filter.propTypes = {
+  filter: PropTypes.string.isRequired,
+  setFilter: PropTypes.func.isRequired,
 }

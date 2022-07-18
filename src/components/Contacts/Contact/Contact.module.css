@@ -1,8 +1,10 @@
 .item {
   width: fit-content;
+  min-width: 360px;
   border-radius: 10px;
   padding: 10px;
   position: absolute;
+
   transform: translateY(var(--top, 0));
   transition: background-color 70ms ease-in, color 70ms ease-in,
     transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -15,6 +17,7 @@
 .wrapper {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .deleteBtn {

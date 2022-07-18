@@ -1,0 +1,72 @@
+.svg {
+  color: #444;
+  fill: white;
+  filter: drop-shadow(0px 2px 2px #0006);
+
+  user-select: none;
+
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+}
+
+.svg:global(.visible) {
+  opacity: 1;
+  transition: opacity 30ms ease-in, transform 50ms ease-in;
+}
+
+.svg:global(.visible.error .arrows) {
+  display: none;
+}
+
+.svg:global(.visible.error .error) {
+  color: #222;
+  display: inline;
+}
+
+.svg:global(.visible.error):hover {
+  transform: scale(1.08);
+}
+
+.svg:global(.visible.error) {
+  --bounce: bounce;
+  animation: var(--bounce) 2s cubic-bezier(0.46, 0.03, 0.54, 0.97) infinite;
+}
+
+.container:global(.extended) .svg:global(.visible.error) {
+  fill: #f55;
+  animation: none;
+}
+
+.container {
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  top: 55px;
+  right: 10px;
+}
+
+.info {
+  position: absolute;
+  left: 50px;
+  top: -8px;
+  width: 415px;
+  min-height: 45px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 236, 236, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  padding: 10px 30px 10px 20px;
+
+  line-height: 2;
+
+  border-radius: 4px;
+  box-shadow: 0 5px 8px -2px #0005, 0 0 1px 0 #0004;
+
+  transition: transform 120ms ease-in;
+  transform: translateX(0px);
+}
+
+.container:global(.extended) .info {
+  transform: translateX(-405px);
+}

@@ -12,7 +12,8 @@
       "deleteContact": "Удалить",
       "nameMessage": "Имя может содержать только буквы, апостроф, дефис и пробелы. Например: Андрей, Якоб Милаев, Чарльз де-Братз д'Артаньян",
       "phoneMessage": "Телефонный номер должен состоять из цифр, может содержать пробелы, дефисы, скобки и может начинаться с +",
-      "alreadyInContacts": " уже есть в контактах."
+      "alreadyInContacts": " уже есть в контактах.",
+      "unknownError": "Неизвестная ошибка"
     },
     "ua": {
       "phoneBook": "Телефонна книга",
@@ -25,7 +26,8 @@
       "deleteContact": "Видалити",
       "nameMessage": "Назва може містити лише літери, апостроф, дефіс та пробіли. Наприклад: Андрій, Якоб Мілаєв, Шарль де Бразз д'Артаньян",
       "phoneMessage": "Номер телефону повинен складатися з цифр, може містити пробіли, дефіси, дужки та може починатися з +",
-      "alreadyInContacts": " вже є в контактах."
+      "alreadyInContacts": " вже є в контактах.",
+      "unknownError": "Невідома помилка"
     },
     "en": {
       "phoneBook": "Phonebook",
@@ -38,7 +40,8 @@
       "deleteContact": "Delete",
       "nameMessage": "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan",
       "phoneMessage": "Phone number must be digits and can contain spaces, dashes, parentheses and can start with +",
-      "alreadyInContacts": " is already in contacts."
+      "alreadyInContacts": " is already in contacts.",
+      "unknownError": "Unknown error"
     }
   }
 }

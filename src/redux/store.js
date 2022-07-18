@@ -1,26 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
-import contacts from './contacts-slice';
-import language from './language-slice';
-
-import { defaultLanguage } from 'components/LanguageProvider';
-import { loadFromStorage, saveToStorage } from 'helpers/localStorage';
-
-const defaultState = {
-  contacts: {
-    items: [],
-    filter: '',
-  },
-  language: defaultLanguage,
-};
+import contacts from './contactsSlice';
+import language from './languageSlice';
+import loading from './asyncStatusSlice';
+import mockApi from 'helpers/mockApi';
 
 const store = configureStore({
-  reducer: { contacts, language },
+  reducer: { contacts, language, loading },
   devTools: process.env.NODE_ENV !== 'production',
-  preloadedState: loadFromStorage(null, defaultState),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      thunk: { extraArgument: mockApi },
+    }),
 });
 
-store.subscribe(() => {
-  saveToStorage(null, store.getState());
-});
+if (process.env.NODE_ENV !== 'production') {
+  store.subscribe(() => {
+    console.log('Store changed:', store.getState());
+  });
+}
 
 export default store;
