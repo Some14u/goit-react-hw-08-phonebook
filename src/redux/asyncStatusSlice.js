@@ -19,9 +19,10 @@ const asyncStatusSlice = createSlice({
     builder
       .addMatcher(isPending, () => ({ status: status.PENDING }))
       .addMatcher(isFulfilled, () => ({ status: status.IDLE }))
-      .addMatcher(isRejected, (_, { error }) => {
-        return { status: status.ERROR, error };
-      });
+      .addMatcher(isRejected, (_, { error }) => ({
+        status: status.ERROR,
+        error,
+      }));
   },
 });
 
