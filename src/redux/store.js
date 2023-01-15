@@ -1,22 +1,37 @@
 import { configureStore } from '@reduxjs/toolkit';
-import contacts from './contactsSlice';
-import language from './languageSlice';
-import loading from './asyncStatusSlice';
-import mockApi from 'helpers/mockApi';
+import connectionsApi from 'redux/connectionsApi';
+import authSlice from './authSlice';
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist';
+import authWebStorage from './authWebStorage';
+
+const authPersistConfig = {
+  key: authSlice.name,
+  storage: authWebStorage,
+  whitelist: ['token'],
+};
 
 const store = configureStore({
-  reducer: { contacts, language, loading },
-  devTools: process.env.NODE_ENV !== 'production',
+  reducer: {
+    [connectionsApi.reducerPath]: connectionsApi.reducer,
+    [authSlice.name]: persistReducer(authPersistConfig, authSlice.reducer),
+  },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      thunk: { extraArgument: mockApi },
-    }),
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(connectionsApi.middleware),
+  // devTools: true,
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  store.subscribe(() => {
-    console.log('Store changed:', store.getState());
-  });
-}
-
 export default store;
+export const persistor = persistStore(store);
