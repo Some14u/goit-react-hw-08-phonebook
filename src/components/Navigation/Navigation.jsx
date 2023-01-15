@@ -1,4 +1,4 @@
-import UserMenu from "components/UserMenu";
+import UserMenu from 'components/UserMenu';
 
 /*
   We don't actually need this component because it has no practical use atm.

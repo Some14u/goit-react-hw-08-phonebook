@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { Dot } from 'react-animated-dots';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const LoadingText = ({ text = '', ...props }) => (
   <Typography variant="h2" align="center" color={'lightgray'} {...props}>
@@ -14,6 +14,6 @@ const LoadingText = ({ text = '', ...props }) => (
 LoadingText.propTypes = {
   text: PropTypes.string,
   props: PropTypes.arrayOf(PropTypes.any),
-}
+};
 
 export default LoadingText;
