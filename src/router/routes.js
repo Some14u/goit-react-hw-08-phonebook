@@ -35,10 +35,6 @@ const routes = [
         loader: authGate(authGate.modes.authorizedOnly),
         element: <Contacts />,
       },
-      {
-        path: '*',
-        element: <NotFoundPage />,
-      },
     ],
   },
   {
