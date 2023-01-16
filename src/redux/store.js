@@ -30,7 +30,7 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }).concat(connectionsApi.middleware),
-  // devTools: true,
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export default store;

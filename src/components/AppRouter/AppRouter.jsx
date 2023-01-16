@@ -2,8 +2,11 @@ import { useMemo } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import routes from 'router/routes';
 
+const basename = process.env.PUBLIC_URL + "/";
+console.log(basename)
+
 const AppRouter = () => {
-  const router = useMemo(() => createBrowserRouter(routes), []);
+  const router = useMemo(() => createBrowserRouter(routes, { basename }), []);
   return <RouterProvider router={router} />;
 };
 
