@@ -32,7 +32,7 @@ const requestCredentials = async value => {
 
     if (promise.isError) return value;
 
-    // Manually set user again because previous request
+    // Manually set user credentials
     store.dispatch(
       authSlice.actions.setCredentials({ user: { ...promise.data }, token })
     );
