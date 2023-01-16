@@ -1,4 +1,5 @@
 import { Link, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import CenteredContainer from 'components/CenteredContainer';
 import { useDocumentTitleRenamer } from 'helpers/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +15,7 @@ const NotFoundPage = () => {
     <CenteredContainer>
       <Typography variant="h5">This page do not exist. Error 404.</Typography>
       <p>
-        <Link onClick={goBack} href="#">Go back</Link> or <Link href="/">go home</Link>
+        <Link onClick={goBack} href="#">Go back</Link> or <Link to="/" component={RouterLink}>go home</Link>
       </p>
     </CenteredContainer>
   );
