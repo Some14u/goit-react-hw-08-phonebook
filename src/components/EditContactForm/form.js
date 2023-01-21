@@ -11,7 +11,7 @@ const editContactValidators = {
   number: {
     emptyField: value =>
       value === '' && 'Please provide the person phone number here',
-    invalidEmail: value =>
+    invalidPhoneNumber: value =>
       !/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(value) &&
       'Please enter a valid phone number',
   },

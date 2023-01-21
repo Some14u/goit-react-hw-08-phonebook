@@ -8,7 +8,7 @@ import { setCredentials } from 'redux/authSlice';
 import userApi from 'redux/userApiSlice';
 import { buildFormProps, useAuthError } from './form';
 import { useActionFromMutationsByMode, useBoolean } from 'helpers/hooks';
-import ControlledMuiInput from 'components/ControlledTextField';
+import ControlledMuiTextField from 'components/ControlledTextField';
 import PasswordEye from './PasswordEye';
 import PropTypes from "prop-types";
 
@@ -75,24 +75,23 @@ const AuthForm = ({ mode }) => {
       <fieldset disabled={action.isLoading}>
         <Stack spacing={3} mb={4}>
           <Collapse in={mode === 'register'}>
-            <ControlledMuiInput
+            <ControlledMuiTextField
               control={control}
               name="name"
-              type="name"
               label="Your name"
               apiError={authError}
               fullWidth
               sx={{ mt: 3 }}
             />
           </Collapse>
-          <ControlledMuiInput
+          <ControlledMuiTextField
             control={control}
             name="email"
             type="email"
             label="Email address"
             apiError={authError}
           />
-          <ControlledMuiInput
+          <ControlledMuiTextField
             control={control}
             name="password"
             label="Password"

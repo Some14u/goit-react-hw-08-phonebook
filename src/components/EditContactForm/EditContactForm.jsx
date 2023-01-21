@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import contactsApi from 'redux/contactsApiSlice';
 import { editContactValidators, emptyContact } from './form';
 import { useActionFromMutationsByMode, useTrapFocus } from 'helpers/hooks';
-import ControlledMuiInput from 'components/ControlledTextField';
+import ControlledMuiTextField from 'components/ControlledTextField';
 import { buildResolver } from 'helpers/misc';
 import PropTypes from 'prop-types';
 
@@ -69,7 +69,7 @@ const EditContactForm = ({ contact = emptyContact, mode, hideForm }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <fieldset disabled={action.isLoading}>
         <Stack spacing={2} mt={1} mb={2}>
-          <ControlledMuiInput
+          <ControlledMuiTextField
             control={control}
             name="name"
             label="Name"
@@ -80,11 +80,12 @@ const EditContactForm = ({ contact = emptyContact, mode, hideForm }) => {
             onKeyDown={trapFocus.onKeyDown}
             ref={trapFocus.firstRef}
           />
-          <ControlledMuiInput
+          <ControlledMuiTextField
             control={control}
             name="number"
             label="Phone number"
             size="small"
+            type="tel"
             fullWidth
             autoComplete="off"
           />
